@@ -3,14 +3,19 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import UserList from './components/UserList.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      repos: []
+      repos: [],
+      users: [],
+      friends: [],
+      displayFriends: false
     }
     this.search = this.search.bind(this);
+    this.showFriends = this.showFriends.bind(this);
   }
 
   componentWillMount() {
@@ -18,13 +23,15 @@ class App extends React.Component {
       type: 'GET',
       url: '/repos',
     }).done((data) => {
+      console.log(data);
       this.setState({
-        repos: data
+        repos: data.repoList,
+        users: data.userList
       });
     });
   };
 
-  search (term) {
+  search(term) {
     console.log(`${term} was searched`);
     // TODO
     $.ajax({
@@ -36,17 +43,41 @@ class App extends React.Component {
       },
     }).done((data) => {
       this.setState({
-        repos: data
+        repos: data.repoList,
+        users: data.userList
       });
     });
   };
 
-  render () {
-    return (<div>
+  showFriends() {
+    if (this.state.displayFriends) 
+      this.setState({displayFriends: false})
+    else  
+      $.ajax({
+        type: 'GET',
+        url: '/friends',
+      }).done((data) => {
+        console.log(data);
+        this.setState({
+          friends: data,
+          displayFriends: true
+        });
+      });
+  };
+
+  render() {
+    return (<div className='main-container'><div>
       <h1>Github Fetcher</h1>
       <Search onSearch={this.search}/>
       <RepoList repos={this.state.repos}/>
-    </div>)
+    </div>
+    <div> <UserList users={this.state.users}
+                    friends={this.state.friends}
+                    display={this.state.displayFriends}
+                    friendsClick={this.showFriends}/> 
+    </div>
+    </div>
+    );
   };
 };
 

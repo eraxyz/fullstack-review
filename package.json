@@ -24,6 +24,8 @@
     "nodemon": "^1.18.10",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "request-promise": "^4.2.4",
+    "request-promise-native": "^1.0.7"
   }
 }

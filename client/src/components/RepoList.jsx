@@ -1,12 +1,12 @@
 import React from 'react';
 import RepoInfo from './RepoInfo.jsx';
 
-const RepoList = (props) => (
+const RepoList = ({repos}) => (
   <div>
     <h3> Repo List Component </h3>
-    There are {props.repos.length} repos.
-    {props.repos.map((repo) => 
-      <RepoInfo repo={repo}></RepoInfo>)}
+    Top {repos.length} repos by forks.
+    {repos.map((repo) => 
+      <RepoInfo repo={repo}/>)}
   </div>
 );
 
